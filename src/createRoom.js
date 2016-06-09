@@ -18,6 +18,7 @@ var MatrixClientPeg = require('./MatrixClientPeg');
 var Modal = require('./Modal');
 var sdk = require('./index');
 var dis = require("./dispatcher");
+var UserSettingsStore = require('./UserSettingsStore');
 
 var q = require('q');
 
@@ -37,6 +38,7 @@ function createRoom(opts) {
     var NeedToRegisterDialog = sdk.getComponent("dialogs.NeedToRegisterDialog");
     var Loader = sdk.getComponent("elements.Spinner");
 
+
     var client = MatrixClientPeg.get();
     if (client.isGuest()) {
         Modal.createDialog(NeedToRegisterDialog, {
@@ -46,10 +48,12 @@ function createRoom(opts) {
         return q(null);
     }
 
+
     // set some defaults for the creation
     var createOpts = opts.createOpts || {};
     createOpts.preset = createOpts.preset || 'private_chat';
     createOpts.visibility = createOpts.visibility || 'private';
+    createOpts.creation_content = createOpts.creation_content || {};
 
     // Allow guests by default since the room is private and they'd
     // need an invite. This means clicking on a 3pid invite email can
@@ -64,23 +68,66 @@ function createRoom(opts) {
         }
     ];
 
-    var modal = Modal.createDialog(Loader);
+    return doCreateRoomDialog().then(function(dialogOpts) {
+        if (!dialogOpts) {
+            // cancelled
+            return null;
+        }
 
-    return client.createRoom(createOpts).finally(function() {
-        modal.close();
-    }).then(function(res) {
-        dis.dispatch({
-            action: 'view_room',
-            room_id: res.room_id
+        if (dialogOpts.encrypt) {
+            createOpts.initial_state.push({
+                content: {
+                    algorithm: "m.olm.v1.curve25519-aes-sha2",
+                },
+                type: 'm.room.encryption',
+                state_key: '',
+            });
+        }
+
+        var modal = Modal.createDialog(Loader);
+
+        return client.createRoom(createOpts).finally(function() {
+            modal.close();
+        }).then(function(res) {
+            dis.dispatch({
+                action: 'view_room',
+                room_id: res.room_id
+            });
+            return res.room_id;
+        }, function(err) {
+            Modal.createDialog(ErrorDialog, {
+                title: "Failure to create room",
+                description: err.toString()
+            });
+            return null;
         });
-        return res.room_id;
-    }, function(err) {
-        Modal.createDialog(ErrorDialog, {
-            title: "Failure to create room",
-            description: err.toString()
-        });
-        return null;
     });
+}
+
+/**
+ * Open the modal 'create room' dialog
+ *
+ * The result object includes:
+ *  - encrypt: true if encryption is enabled
+ *
+ * @return {Promise} which resolves when the dialog closes. Resolves to null if
+ *    the dialog is cancelled, else an object describing the options chosen.
+ */
+function doCreateRoomDialog() {
+    // for now, we'll only show the CreateRoomDialog if e2e is enabled.
+    if (!UserSettingsStore.isFeatureEnabled("e2e_encryption")) {
+        return q({});
+    }
+
+    var CreateRoomDialog = sdk.getComponent("dialogs.CreateRoomDialog");
+
+    var deferred = q.defer();
+    Modal.createDialog(CreateRoomDialog, {
+        onFinished: function(create, opts) {
+            deferred.resolve(create ? opts : null);
+        },
+    });
+    return deferred.promise;
 }
 
 module.exports = createRoom;
