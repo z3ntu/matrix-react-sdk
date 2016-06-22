@@ -92,10 +92,8 @@ var commands = {
     encrypt: new Command("encrypt", "<on|off>", function(room_id, args) {
         if (args == "on") {
             var client = MatrixClientPeg.get();
-            var members = client.getRoom(room_id).currentState.members;
-            var user_ids = Object.keys(members);
             return success(
-                encryption.enableEncryption(client, room_id, user_ids)
+                encryption.enableEncryption(client, room_id)
             );
         }
         if (args == "off") {

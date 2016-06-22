@@ -14,16 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-function enableEncyption(client, roomId, members) {
-    members = members.slice(0);
-    members.push(client.credentials.userId);
-    // TODO: Check the keys actually match what keys the user has.
-    // TODO: Don't redownload keys each time.
-    return client.downloadKeys(members, "forceDownload").then(function(res) {
-        return client.setRoomEncryption(roomId, {
-            algorithm: "m.olm.v1.curve25519-aes-sha2",
-            members: members,
-        });
+function enableEncyption(client, roomId) {
+    return client.setRoomEncryption(roomId, {
+        algorithm: "m.olm.v1.curve25519-aes-sha2",
     })
 }
 
