@@ -16,7 +16,6 @@ limitations under the License.
 
 import React from 'react';
 import sdk from '../../../index';
-import dis from '../../../dispatcher';
 import MatrixClientPeg from '../../../MatrixClientPeg';
 import GeminiScrollbar from 'react-gemini-scrollbar';
 import Resend from '../../../Resend';
@@ -122,7 +121,7 @@ export default React.createClass({
             warning = (
                 <h4>
                     {_t("You are currently blacklisting unverified devices; to send " +
-                    "messages to these devices you must verify them.")}
+                        "messages to these devices you must verify them.")}
                 </h4>
             );
         } else {
