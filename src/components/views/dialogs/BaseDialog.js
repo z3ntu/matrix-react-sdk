@@ -70,9 +70,7 @@ export default React.createClass({
 
         return (
             <div onKeyDown={this._onKeyDown} className={this.props.className}>
-                <AccessibleButton onClick={this._onCancelClick}
-                    className="mx_Dialog_cancelButton"
-                >
+                <AccessibleButton onClick={this._onCancelClick} className="mx_Dialog_cancelButton">
                     <TintableSvg src="img/icons-close-button.svg" width="35" height="35" />
                 </AccessibleButton>
                 <div className='mx_Dialog_title'>
