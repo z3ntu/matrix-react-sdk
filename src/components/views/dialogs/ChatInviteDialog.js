@@ -94,9 +94,7 @@ module.exports = React.createClass({
                 if (rooms.length > 0) {
                     // A Direct Message room already exists for this user, so select a
                     // room from a list that is similar to the one in MemberInfo panel
-                    const ChatCreateOrReuseDialog = sdk.getComponent(
-                        "views.dialogs.ChatCreateOrReuseDialog"
-                    );
+                    const ChatCreateOrReuseDialog = sdk.getComponent("views.dialogs.ChatCreateOrReuseDialog");
                     Modal.createDialog(ChatCreateOrReuseDialog, {
                         userId: userId,
                         onFinished: (success) => {
@@ -282,9 +280,9 @@ module.exports = React.createClass({
             return addr.address;
         });
 
+        const self = this;
         if (this.props.roomId) {
             // Invite new user to a room
-            var self = this;
             inviteMultipleToRoom(this.props.roomId, addrTexts)
             .then(function(addrs) {
                 var room = MatrixClientPeg.get().getRoom(self.props.roomId);
@@ -315,7 +313,6 @@ module.exports = React.createClass({
             .done();
         } else {
             // Start multi user chat
-            var self = this;
             var room;
             createRoom().then(function(roomId) {
                 room = MatrixClientPeg.get().getRoom(roomId);

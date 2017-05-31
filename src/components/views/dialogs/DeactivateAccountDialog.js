@@ -19,7 +19,7 @@ import React from 'react';
 import sdk from '../../../index';
 import MatrixClientPeg from '../../../MatrixClientPeg';
 import * as Lifecycle from '../../../Lifecycle';
-import Velocity from 'velocity-vector';
+import velocity from 'velocity-vector';
 import { _t } from '../../../languageHandler';
 
 export default class DeactivateAccountDialog extends React.Component {
@@ -59,9 +59,9 @@ export default class DeactivateAccountDialog extends React.Component {
         }, (err) => {
             let errStr = _t('Unknown error');
             // https://matrix.org/jira/browse/SYN-744
-            if (err.httpStatus == 401 || err.httpStatus == 403) {
+            if (err.httpStatus === 401 || err.httpStatus === 403) {
                 errStr = _t('Incorrect password');
-                Velocity(this._passwordField, "callout.shake", 300);
+                velocity(this._passwordField, "callout.shake", 300);
             }
             this.setState({
                 busy: false,
@@ -86,7 +86,7 @@ export default class DeactivateAccountDialog extends React.Component {
             passwordBoxClass = 'error';
         }
 
-        const okLabel = this.state.busy ? <Loader /> : 'Deactivate Account';
+        const okLabel = this.state.busy ? <Loader /> : _t('Deactivate Account');
         const okEnabled = this.state.confirmButtonEnabled && !this.state.busy;
 
         let cancelButton = null;
@@ -118,11 +118,7 @@ export default class DeactivateAccountDialog extends React.Component {
                     {error}
                 </div>
                 <div className="mx_Dialog_buttons">
-                    <button
-                        className="mx_Dialog_primary danger"
-                        onClick={this._onOk}
-                        disabled={!okEnabled}
-                    >
+                    <button className="mx_Dialog_primary danger" onClick={this._onOk} disabled={!okEnabled}>
                         {okLabel}
                     </button>
 

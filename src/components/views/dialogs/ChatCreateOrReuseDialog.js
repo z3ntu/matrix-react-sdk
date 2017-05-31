@@ -17,6 +17,7 @@ limitations under the License.
 import React from 'react';
 import sdk from '../../../index';
 import dis from '../../../dispatcher';
+import { _t } from '../../../languageHandler';
 import MatrixClientPeg from '../../../MatrixClientPeg';
 import DMRoomMap from '../../../utils/DMRoomMap';
 import AccessibleButton from '../elements/AccessibleButton';
@@ -90,9 +91,9 @@ export default class ChatCreateOrReuseDialog extends React.Component {
         return (
             <BaseDialog className='mx_ChatCreateOrReuseDialog'
                 onFinished={() => {
-                    this.props.onFinished(false)
+                    this.props.onFinished(false);
                 }}
-                title='Create a new chat or reuse an existing one'
+                title={_t('Create a new chat or reuse an existing one')}
             >
                 <div className="mx_Dialog_content">
                     You already have existing direct chats with this user:

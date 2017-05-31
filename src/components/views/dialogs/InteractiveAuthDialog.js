@@ -77,10 +77,8 @@ export default React.createClass({
                 <div>
                     <div>{this.state.authError.message || this.state.authError.toString()}</div>
                     <br />
-                    <AccessibleButton onClick={this._onDismissClick}
-                        className="mx_UserSettings_button"
-                    >
-                        Dismiss
+                    <AccessibleButton onClick={this._onDismissClick} className="mx_UserSettings_button">
+                        {_t('Dismiss')}
                     </AccessibleButton>
                 </div>
             );

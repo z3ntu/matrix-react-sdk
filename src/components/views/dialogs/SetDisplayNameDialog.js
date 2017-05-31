@@ -16,6 +16,7 @@ limitations under the License.
 
 import React from 'react';
 import sdk from '../../../index';
+import { _t } from '../../../languageHandler';
 import MatrixClientPeg from '../../../MatrixClientPeg';
 
 /**
@@ -35,11 +36,11 @@ export default React.createClass({
             return { value: this.props.currentDisplayName };
         }
 
-        if (MatrixClientPeg.get().isGuest()) {
-            return { value : "Guest " + MatrixClientPeg.get().getUserIdLocalpart() };
-        }
-        else {
-            return { value : MatrixClientPeg.get().getUserIdLocalpart() };
+        const cli = MatrixClientPeg.get();
+        if (cli.isGuest()) {
+            return { value: `${_t('Guest')} ${cli.getUserIdLocalpart()}` };
+        } else {
+            return { value: cli.getUserIdLocalpart() };
         }
     },
 

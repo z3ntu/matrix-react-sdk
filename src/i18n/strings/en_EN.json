@@ -607,6 +607,7 @@
     "Auto-complete": "Auto-complete",
     "Resend all": "Resend all",
     "(~%(searchCount)s results)": "(~%(searchCount)s results)",
+    "Register": "Register",
     "Cancel": "Cancel",
     "cancel all": "cancel all",
     "or": "or",
@@ -766,5 +767,8 @@
     "Online": "Online",
     "Idle": "Idle",
     "Offline": "Offline",
+    "Create a new chat or reuse an existing one": "Create a new chat or reuse an existing one",
+    "Guest": "Guest",
+    "Otherwise, <a onClick={this._sendBugReport} href=\"#\">click here</a> to send a bug report.": "Otherwise, <a onClick={this._sendBugReport} href=\"#\">click here</a> to send a bug report.",
     "Disable URL previews for this room (affects only you)": "Disable URL previews for this room (affects only you)"
 }

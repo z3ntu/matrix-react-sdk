@@ -105,9 +105,7 @@ export default React.createClass({
                 </div>
                 {reasonBox}
                 <div className="mx_Dialog_buttons">
-                    <button className={confirmButtonClass}
-                        onClick={this.onOk} autoFocus={!this.props.askReason}
-                    >
+                    <button className={confirmButtonClass} onClick={this.onOk} autoFocus={!this.props.askReason}>
                         {this.props.action}
                     </button>
 
